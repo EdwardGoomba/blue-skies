@@ -6,6 +6,11 @@ const https = require('https');
 // Store api key
 const apiKey = 'd069855404e65ba709f0867ff8018551';
 
+// Print Error Messages
+function printError(error) {
+  console.error(error.message);
+}
+
 // Get weather and print to console
 function printWeather(location, conditions) {
   const weather = `The weather in ${location} is ${conditions} Kelvin`;
@@ -25,19 +30,24 @@ function getWeather(yourZip) {
       });
 
       response.on('end', () => {
-        // Parse the data
-        const location = JSON.parse(body);
+        // Check for valid location, print error if location nonexistant
+        try {
+          // Parse the data
+          const location = JSON.parse(body);
 
-        // Print the data
-        printWeather(location.name, location.main.temp);
+          // Print the data
+          printWeather(location.name, location.main.temp);
+        } catch (error) {
+          printError(error);
+        }
 
       })
 
     });
 
-    request.on('error', error => console.error(`Problem with request: ${error.message}`))
+    request.on('error', error => printError);
   } catch (error) {
-    console.error(error.message);
+    printError(error);
   }
 }
 
