@@ -6,6 +6,7 @@ const https = require('https');
 // Store api key
 const apiKey = 'd069855404e65ba709f0867ff8018551';
 
+//Set zip
 const yourZip = '17552';
 
 // Get weather and print to console
@@ -16,13 +17,20 @@ function printWeather(yourZip) {
 
 // Connect to API Url
 const request = https.get(`https://api.openweathermap.org/data/2.5/weather?zip=${yourZip}&appid=${apiKey}`, response => {
-  console.log(response.statusCode);
+
+  let body = '';
 
   // Read the data
+  response.on('data', data => {
+    body += data.toString();
+  });
 
-  // Parse the data
-
+  response.on('end', () => {
+    // Parse the data
+    console.log(body);
   // Print the data
+
+  })
 
 });
 
