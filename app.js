@@ -36,13 +36,9 @@ function getWeather(yourZip) {
 
 }
 
-// Set zip codes you want to pull weather for
-const locations = ['17552', '98119'];
-
-locations.forEach(yourZip => {
-  getWeather(yourZip);
-});
-
 // Input zip via command line
+const locations = process.argv.slice(2);
+
+locations.forEach(getWeather);
 
 // Convert from Kelvin to F
