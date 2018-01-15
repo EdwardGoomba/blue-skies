@@ -22,26 +22,33 @@ function getWeather(yourZip) {
   // Connect to API Url
     const request = https.get(`https://api.openweathermap.org/data/2.5/weather?zip=${yourZip}&appid=${apiKey}`, response => {
 
-      let body = '';
+      if (response.statusCode === 200) {
+        let body = '';
 
-      // Read the data
-      response.on('data', data => {
-        body += data.toString();
-      });
+        // Read the data
+        response.on('data', data => {
+          body += data.toString();
+        });
 
-      response.on('end', () => {
-        // Check for valid location, print error if location nonexistant
-        try {
-          // Parse the data
-          const location = JSON.parse(body);
+        response.on('end', () => {
+          // Check for valid location, print error if location nonexistant
+          try {
+            // Parse the data
+            const location = JSON.parse(body);
 
-          // Print the data
-          printWeather(location.name, location.main.temp);
-        } catch (error) {
-          printError(error);
-        }
+            // Print the data
+            printWeather(location.name, location.main.temp);
+          } catch (error) {
+            printError(error);
+          }
 
-      })
+        });
+      } else {
+        const message = `There was an error getting the location for ${yourZip} (${response.statusCode})`;
+        const statusCodeError = new Error(message);
+        printError(statusCodeError);
+      }
+
 
     });
 
