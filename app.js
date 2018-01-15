@@ -13,27 +13,32 @@ function printWeather(location, conditions) {
 }
 
 function getWeather(yourZip) {
-// Connect to API Url
-  const request = https.get(`https://api.openweathermap.org/data/2.5/weather?zip=${yourZip}&appid=${apiKey}`, response => {
+  try {
+  // Connect to API Url
+    const request = https.get(`https://api.openweathermap.org/data/2.5/weather?zip=${yourZip}&appid=${apiKey}`, response => {
 
-    let body = '';
+      let body = '';
 
-    // Read the data
-    response.on('data', data => {
-      body += data.toString();
+      // Read the data
+      response.on('data', data => {
+        body += data.toString();
+      });
+
+      response.on('end', () => {
+        // Parse the data
+        const location = JSON.parse(body);
+
+        // Print the data
+        printWeather(location.name, location.main.temp);
+
+      })
+
     });
 
-    response.on('end', () => {
-      // Parse the data
-      const location = JSON.parse(body);
-
-      // Print the data
-      printWeather(location.name, location.main.temp);
-
-    })
-
-  });
-
+    request.on('error', error => console.error(`Problem with request: ${error.message}`))
+  } catch (error) {
+    console.error(error.message);
+  }
 }
 
 // Input zip via command line
@@ -42,3 +47,7 @@ const locations = process.argv.slice(2);
 locations.forEach(getWeather);
 
 // Convert from Kelvin to F
+
+// Require .json file
+
+// Print our error messages
