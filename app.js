@@ -68,4 +68,6 @@ locations.forEach(getWeather);
 
 // Require .json file
 
-// Print our error messages
+// Export modules
+
+// Add additional weather info
