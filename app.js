@@ -2,6 +2,7 @@
 
 // Import modules
 const https = require('https');
+const http = require('http');
 
 // Store api key
 const apiKey = 'd069855404e65ba709f0867ff8018551';
@@ -44,7 +45,7 @@ function getWeather(yourZip) {
 
         });
       } else {
-        const message = `There was an error getting the location for ${yourZip} (${response.statusCode})`;
+        const message = `There was an error getting the location for ${yourZip} (${http.STATUS_CODES[response.statusCode]})`;
         const statusCodeError = new Error(message);
         printError(statusCodeError);
       }
