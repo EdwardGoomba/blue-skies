@@ -10,8 +10,8 @@ const apiKey = 'd069855404e65ba709f0867ff8018551';
 const yourZip = '17552';
 
 // Get weather and print to console
-function printWeather(yourZip) {
-  const weather = `The weather at zip ${yourZip} is `;
+function printWeather(location, conditions) {
+  const weather = `The weather in ${location} is ${conditions} Kelvin`;
   console.log(weather);
 }
 
@@ -27,11 +27,15 @@ const request = https.get(`https://api.openweathermap.org/data/2.5/weather?zip=$
 
   response.on('end', () => {
     // Parse the data
-    console.log(body);
-  // Print the data
+    const location = JSON.parse(body);
+
+    // Print the data
+    printWeather(location.name, location.main.temp);
 
   })
 
 });
 
 // Input zip via command line
+
+// Convert from Kelvin to F
